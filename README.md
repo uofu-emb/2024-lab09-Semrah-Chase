@@ -13,7 +13,8 @@
 5. **Arrival/Depature**: An arrival event always precedes a departure event.
 6. **Power**: The Ashton example, power will never be interrupted.
 7. **One-Way Tracks**: Trains can only go one direction on their respective tracks.
-8. **~IDLE**: Idle state is unreachable if train is present. 
+8. **~IDLE**: Idle state is unreachable if train is present.
+9. **Armed Alarmed No Train**: The arms cannot be down if there are no trains.
 
 ## Inputs (Events/Triggers):
 1. **northbound_approach**: Triggered when the first car of a northbound train crosses the approach sensor.
@@ -48,3 +49,52 @@
 4. **Train_Cleared → Idle**:
    - **Trigger**: `elapsed` event (10 seconds after the train has cleared the crossing).
    - **Action**: Alarm_Off.
+
+# Part 2
+
+| number | arms_down | alarm_on | northbound_present | southbound_present |    north_approach | south_approach | north_depart | south_depart | elapsed | safety_hazard |
+|--------|-----------|----------|--------------------|--------------------|   ----------------|----------------|--------------|--------------|---------|---------------|
+| 0      | 0         | 0        | 0                  | 0                  |    6              | 5              | 17           | 17           | 17      |               |
+| 1      | 0         | 0        | 0                  | 1                  |                   |                |              |              |         | 18            |
+| 2      | 0         | 0        | 1                  | 0                  |                   |                |              |              |         | 18            |
+| 3      | 0         | 0        | 1                  | 1                  |                   |                |              |              |         | 18            |
+| 4      | 0         | 1        | 0                  | 0                  |   6               | 5              | 17           | 17           | 0       |               |
+| 5      | 0         | 1        | 0                  | 1                  |   16              | 16             | 17           | 4            | 13      |               |
+| 6      | 0         | 1        | 1                  | 0                  |   16              | 16             | 4            | 17           | 14      |               |
+| 7      | 0         | 1        | 1                  | 1                  |                   |                |              |              |         | 16            |
+| 8      | 1         | 0        | 0                  | 0                  |                   |                |              |              |         | 18            |
+| 9      | 1         | 0        | 0                  | 1                  |                   |                |              |              |         | 18            |
+| 10     | 1         | 0        | 1                  | 0                  |                   |                |              |              |         | 18            |
+| 11     | 1         | 0        | 1                  | 1                  |                   |                |              |              |         | 18            |
+| 12     | 1         | 1        | 0                  | 0                  |                   |                |              |              |         | 24            |
+| 13     | 1         | 1        | 0                  | 1                  |  16               | 16             | 17           | 4            | stays13 |               |
+| 14     | 1         | 1        | 1                  | 0                  |  16               | 16             | 4            | 17           | stays14 |               |
+| 15     | 1         | 1        | 1                  | 1                  |                   |                |              |              |         | 16            |
+
+| number | invariant             |
+|--------|-----------------------|
+| 16     | Multiple Trains       |
+| 17     | False Sensor          |
+| 18     | Alarm On              |
+| 19     | Alarm off             |
+| 20     | Arrival/Departure     |
+| 21     | Power	         |
+| 22     | One-Way Tracks        |
+| 23     | IDLE                  |
+| 24     | Armed Alarmed No train|
+
+## See Updated_FSM pdf to see the above table in action.
+
+## Pre-Lab (Exchanging Initial FSMs)
+
+We both designed extended FSMs without realizing that wasn't what the question asked. When we got to class we read more carefully and started from scratch.
+The original FSM is our combined idea, which has the word Simple in the pdf name.
+
+## Lab Question (Counter Examples)
+
+We found an issue while working through the table, where we added an arrow going from Train_Cleared to Alarm_Ringing states to account for State 4 of the table.
+This also applies to the example provided in the lab, which does not account for State 4.
+
+
+
+
